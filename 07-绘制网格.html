@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绘制网格</title>
+    <style>
+        canvas{
+            border: 1px solid #cccccc;
+        }
+    </style>
+</head>
+<body>
+    <canvas width="800px" height="800px"></canvas>
+    <script>
+        var myCanvas = document.querySelector('canvas');
+        var ctx = myCanvas.getContext('2d');
+        /*拿到画布的宽高*/
+        var widthCanvas = ctx.canvas.width;
+        var heightCanvas = ctx.canvas.height;
+        /*单个网格的宽高*/
+        var gridding = 20;
+        /*描绘网格横线*/
+        for (var i=0;i<=heightCanvas/gridding;i++){
+            ctx.beginPath();
+            ctx.moveTo(0,gridding*i-0.5);
+            ctx.lineTo(widthCanvas,gridding*i-0.5);
+            ctx.strokeStyle="#eee";
+            ctx.stroke();
+        }
+        /*描绘网格纵线*/
+        for (var i=0;i<=widthCanvas/gridding;i++){
+            ctx.beginPath();
+            ctx.moveTo(gridding*i-0.5,0);
+            ctx.lineTo(gridding*i-0.5,heightCanvas);
+            ctx.strokeStyle="#eee";
+            ctx.stroke();
+        }
+    </script>
+</body>
+</html>

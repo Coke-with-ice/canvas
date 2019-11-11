@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>带说明的饼状图</title>
+    <style>
+        canvas{
+            border: 1px solid #cccccc;
+            display: block;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body>
+<canvas width="800px" height="600px"></canvas>
+<script>
+    /*饼状图构造函数*/
+    function PieChart(obj) {
+        this.obj = obj || ""; //接受用户传入的对象
+        this.ctx = this.obj.ctx || document.querySelector('canvas').getContext('2d');
+        this.r = this.obj.r || 200;  //半径
+        this.x0 = this.obj.x0 || this.ctx.canvas.width/2+100; //圆心x
+        this.y0 = this.obj.y0 || this.ctx.canvas.height/2+60; //圆心y
+    }
+    /*初始化方法*/
+    PieChart.prototype.init = function (data) {
+        this.drawPie(data); //饼状图
+        this.drawTitle();
+    };
+    /*绘制饼状图*/
+    PieChart.prototype.drawPie = function (data) {
+        var scaleArr=this.transformAngle(data); //弧度
+        var prevAngle =0;
+        for (var i=0;i<scaleArr.length;i++){
+            var color =  this.getRandomColor();
+            this.ctx.beginPath();
+            /*以下为扇形*/
+            this.ctx.moveTo(this.x0,this.y0);
+            this.ctx.arc(this.x0,this.y0,this.r,prevAngle,prevAngle+scaleArr[i]);
+            this.ctx.closePath();
+            /*以上为扇形*/
+            this.ctx.fillStyle = color;
+            this.ctx.fill();
+            /*以下数据title*/
+            this.drawTitle(prevAngle,scaleArr[i],color,data[i].title);
+            /*以上为数据title*/
+            /*以下为绘制数据描述*/
+            this.drawDesc(i,data[i].title);
+            /*以上为绘制数据描述*/
+            prevAngle = prevAngle+scaleArr[i];
+        }
+    };
+    /*数据title*/
+    PieChart.prototype.drawTitle = function (stratAngle,angle,color,title) {
+       //斜边
+        var edge = this.r + 30; //向外延伸30px
+        //x轴方向的直角边
+        var edgeX = Math.cos(stratAngle+angle/2)*edge;
+        //y轴方向的直角边
+        var edgeY = Math.sin(stratAngle+angle/2)*edge;
+        /*计算延伸点坐标*/
+        var outX = this.x0+edgeX;
+        var outY = this.y0+edgeY;
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.x0,this.y0);
+        this.ctx.lineTo(outX,outY);
+        this.ctx.strokeStyle = color;
+        this.ctx.stroke();
+        /*绘制title*/
+        this.ctx.beginPath();
+        /*.font ：尺寸 字体*/
+        this.ctx.font = '25px Microsoft YaHei';
+        /*textAlign:左右对齐 */
+        this.ctx.textAlign = 'left';
+        /*textBaseline:垂直对齐*/
+        this.ctx.textBaseline = 'middle';
+        /*strokeText（描边） ：文本内容 ，横坐标，纵坐标*/
+        this.ctx.fillText(title,outX,outY);
+    };
+    /*数据描述*/
+    PieChart.prototype.drawDesc = function (index,title) {
+            var x = 30;
+            var y = 10;
+            var space = 10;
+            this.ctx.fillRect(space,space+index*(y+space),x,y);
+            this.ctx.beginPath();
+            this.ctx.font = '15px Microsoft YaHei';
+            this.ctx.textAlign = 'left';
+            this.ctx.textBaseline = 'top';
+            this.ctx.strokeText(title,x+space+10,space+index*(y+space));
+
+    };
+    /*转换弧度 循环次数较多---应改进*/
+    PieChart.prototype.transformAngle = function (data) {
+        var sum=0; //计算总和
+       data.forEach(function (item) {
+           sum+=item.num;
+       });
+        /*计算每份度数*/
+        var scaleArr = [];
+        var circle = Math.PI*2;
+        data.forEach(function (item) {
+            scaleArr.push((item.num /sum)*circle);
+        });
+        return scaleArr;
+    };
+    /*随机颜色*/
+    PieChart.prototype.getRandomColor = function () {
+        return "rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")";
+    }
+    var data =[
+        {
+            title:"a",
+            num : 5
+        },
+        {
+            title:"b",
+            num : 15
+        },
+        {
+            title:"c",
+            num : 320
+        },
+        {
+            title:"d",
+            num : 50
+        },
+        {
+            title:"e",
+            num : 100
+        },
+        {
+            title:"es",
+            num : 105
+        },
+        {
+            title:"f",
+            num : 110
+        },
+        {
+            title:"g",
+            num : 120
+        }
+    ];
+    var a = new PieChart();
+    a.init(data);
+</script>
+</body>
+</html>

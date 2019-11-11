@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>帧动画</title>
+    <style>
+        canvas{
+            border: 1px solid #cccccc;
+            display: block;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body>
+<canvas width="600px" height="600px"></canvas>
+<script>
+    var myCanvas = document.querySelector('canvas');
+    var ctx = myCanvas.getContext('2d');
+
+    var image = new Image();
+    image.onload = function () {
+        /*获取图片的宽高*/
+        var imgW = image.width;
+        var imgH = image.height;
+        /*计算每一个小人物的尺寸*/
+        var personW = imgW/4;
+        var personH = imgH/4;
+        /*帧动画*/
+        /*动画起始点*/
+        var x0 = ctx.canvas.width/2-personW/2;
+        var y0 = ctx.canvas.height/2 - personH/2;
+        var index =0;
+        setInterval(function () {
+            if (index>3) index=0;
+            ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+            ctx.drawImage(image,index*personW,0,personW,personH,x0,y0,personW,personH);
+            index++;
+        },200);
+    }
+    image.src = 'image/04.png';
+</script>
+</body>
+</html>

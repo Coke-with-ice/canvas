@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绘制扇形</title>
+    <style>
+        canvas{
+            border: 1px solid #cccccc;
+        }
+    </style>
+</head>
+<body>
+    <canvas width="800px" height="800px"></canvas>
+    <script type="text/html">
+        var myCanvas = document.querySelector('canvas');
+        var ctx = myCanvas.getContext('2d');
+        var w = ctx.canvas.width;
+        var h = ctx.canvas.height;
+
+        ctx.beginPath(); //0-60
+        ctx.moveTo(w/2,h/2);
+        ctx.arc(w/2,h/2,150,0,Math.PI/3);
+        ctx.fillStyle="rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")";
+        ctx.fill();
+
+        ctx.beginPath(); //60-120
+        ctx.moveTo(w/2,h/2);
+        ctx.arc(w/2,h/2,150,Math.PI/3,2*Math.PI/3);
+        ctx.fillStyle="rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")";
+        ctx.fill();
+
+        ctx.beginPath(); //120-180
+        ctx.moveTo(w/2,h/2);
+        ctx.arc(w/2,h/2,150,2*Math.PI/3,Math.PI);
+        ctx.fillStyle="rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")";
+        ctx.fill();
+
+        ctx.beginPath(); //180-240
+        ctx.moveTo(w/2,h/2);
+        ctx.arc(w/2,h/2,150,Math.PI,4*Math.PI/3);
+        ctx.fillStyle="rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")";
+        ctx.fill();
+
+        ctx.beginPath(); //240-400
+        ctx.moveTo(w/2,h/2);
+        ctx.arc(w/2,h/2,150,4*Math.PI/3,5*Math.PI/3);
+        ctx.fillStyle="rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")";
+        ctx.fill();
+
+        ctx.beginPath(); //240-400
+        ctx.moveTo(w/2,h/2);
+        ctx.arc(w/2,h/2,150,5*Math.PI/3,2*Math.PI);
+        ctx.fillStyle="rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")";
+        ctx.fill();
+    </script>
+    <script>
+        var myCanvas = document.querySelector('canvas');
+        var ctx = myCanvas.getContext('2d');
+        var w = ctx.canvas.width;
+        var h = ctx.canvas.height;
+        /*分成机几份*/
+        var num = 6000;
+        /*每份弧度*/
+        var angle = Math.PI*2/num;
+        /*原点坐标*/
+        var x0 = w/2;
+        var y0 = h/2;
+        /*随机颜色*/
+        function randomColor() {
+            return "rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")";
+        }
+        for (var i =0 ;i<num;i++){
+            ctx.beginPath();
+            ctx.moveTo(x0,y0);
+            ctx.arc(w/2,h/2,150,i*angle,(i+1)*angle);
+            ctx.fillStyle= randomColor();
+            ctx.fill();
+        }
+    </script>
+</body>
+</html>

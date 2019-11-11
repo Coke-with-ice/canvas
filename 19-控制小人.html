@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        canvas{
+            border: 1px solid #cccccc;
+            display: block;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body>
+<canvas width="600px" height="600px"></canvas>
+<script>
+    function Animation(ctx,src) {
+        this.ctx = ctx || document.querySelector('canvas').getContext("2d");
+        this.src = src || "image/04.png";
+        this.canvasW = this.ctx.canvas.width;
+        this.canvasH = this.ctx.canvas.height;
+        this.stepSize = 10; //步长
+        this.direction = 0; //方向 0 1 2 3 前左右后
+        this.stepX =0;
+        this.stepY =0;
+    }
+    Animation.prototype.init = function () {
+        var  that = this;
+        /*加载图片*/
+        this.loadImg(function (img) {
+            /*图片大小*/
+            that.imgW = img.width;
+            that.imgH = img.height;
+            /*人物的大小*/
+            that.personW = that.imgW/4;
+            that.personH = that.imgH/4;
+            /*绘制图片的起点*/
+            that.x0 = that.canvasW/2-that.personW/2;
+            that.y0 = that.canvasH/2-that.personH/2;
+            /*画出初始人物*/
+            that.ctx.drawImage(img,
+                0,0
+                ,that.personW,that.personH
+                ,that.x0,that.y0
+                ,that.personW,that.personH);
+            /*通过方向键控制人物的行走*/
+            that.index = 0;
+            document.onkeydown = function (e) {
+               if (e.keyCode === 37){ //左
+                   that.index++;
+                   that.direction = 1;
+                   that.stepX--;
+                   that.drawImg(img);
+               }else if (e.keyCode === 40){ //上
+                   that.index++;
+                   that.direction = 0;
+                   that.stepY ++;
+                   that.drawImg(img);
+               }else if (e.keyCode === 39){ //右
+                   that.index++;
+                   that.direction = 2;
+                   that.stepX++;
+                   that.drawImg(img);
+               } else if (e.keyCode === 38){ //下
+                   that.index++;
+                   that.direction = 3;
+                   that.stepY --;
+                   that.drawImg(img);
+               }
+            }
+        });
+
+    }
+    /*加载图片*/
+    Animation.prototype.loadImg =function (callback) {
+        var img= new Image();
+        img.onload = function () {
+            callback && callback(img);
+        }
+        img.src = this.src;
+    }
+    Animation.prototype.drawImg = function (img) {
+        /*清除画布*/
+        this.ctx.clearRect(0,0,this.canvasW,this.canvasH);
+        /*绘图*/
+        this.ctx.drawImage(img,
+            this.index*this.personW,this.direction*this.personH
+            ,this.personW,this.personH
+            ,this.x0+this.stepX*this.stepSize,this.y0+this.stepY*this.stepSize
+            ,this.personW,this.personH);
+        /*如果索引超出*/
+        if (this.index>=3){
+            this.index =0;
+        }
+    }
+
+    var  a = new Animation();
+    a.init();
+</script>
+</body>
+</html>

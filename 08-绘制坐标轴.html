@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>坐标轴</title>
+    <style>
+        canvas{
+            border: 1px solid #cccccc;
+        }
+    </style>
+</head>
+<body>
+    <canvas width="800px" height="800px"></canvas>
+    <script>
+        var myCanvas = document.querySelector('canvas');
+        var ctx = myCanvas.getContext('2d');
+        /*原点距离*/
+        var space = 20;
+        var arrowSize=10;
+        /*计算原点*/
+        var canvasWidth = ctx.canvas.width;
+        var canvasHeight = ctx.canvas.height;
+        var x0 = space;
+        var y0 = canvasHeight-space;
+        /*绘制x轴*/
+        ctx.beginPath();
+        ctx.moveTo(x0,y0);
+        ctx.lineTo(canvasWidth-space,y0);
+        /*绘制箭头*/
+        ctx.lineTo(canvasWidth-space-arrowSize,y0+arrowSize/2);
+        ctx.lineTo(canvasWidth-space-arrowSize,y0-arrowSize/2);
+        ctx.lineTo(canvasWidth-space,y0);
+        ctx.fill();
+        ctx.stroke();
+        /*绘制y轴*/
+        ctx.beginPath();
+        ctx.moveTo(x0,y0);
+        ctx.lineTo(x0,space);
+        /*绘制箭头*/
+        ctx.lineTo(x0+arrowSize/2,space+arrowSize);
+        ctx.lineTo(x0-arrowSize/2,space+arrowSize);             ctx.lineTo(x0,space);
+        ctx.fill();
+        ctx.stroke();
+    </script>
+</body>
+</html>
